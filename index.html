@@ -15,249 +15,284 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useMemo } = React;
+  const { useState, useMemo } = React;
 
-    const MENU = {
-      "Veg|Indian": { mains: ["Dal Fry","Dal Makhni","Dal Tadka","Aloo Jeera","Tawa Veg","Paneer Butter Masala","Paneer Tikka Masala","Palak Paneer","Kadai Paneer","Hing Aloo Dum","Khoya Matar Paneer","Veg Biryani"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
-      "Veg|Continental": { mains: ["Au Gratin with Garlic Toast","Cottage Cheese Steak","Corn and Mushroom Lasagne","Mushroom Corn Stroganoff","Pasta- Penne Alfredo","Pasta- Penne Arrabiata","Pasta- Penne Basil Pesto","Pasta- Spaghetti Arrabiata","Pasta- Spaghetti Aglio E Olio","Veg Shashlik with Rice","Spinach Corn Lasagne","Choice of Veg Risotto"], sides: ["None / Included with dish","Garlic Toast","Rice"] },
-      "Veg|Chinese": { mains: ["Chilly Paneer Gravy","Babycorn & Mushroom in Soya Garlic Sauce","Crispy Potato with Choice of Sauce","Crispy Vegetables with Kung Pao sauce","Crispy Vegetables with Schezwan sauce","Stir-Fried Vegetables","Thai Curry Green","Thai Curry Red","Veg Triple Schezwan Rice"], sides: ["None / Included with dish","Garlic Rice","Garlic Noodles","Schezwan Rice","Schezwan Noodles","Mushroom Rice","Mushroom Noodles","Shanghai Rice","Shanghai Noodles","Crispy Chilli Coriander Rice","Crispy Chilli Coriander Noodles","Chilli Garlic Rice","Chilli Garlic Noodles","Hakka Noodles","Veg Fried Rice","Steamed Rice"] },
-      "Non-Veg (Chicken)|Indian": { mains: ["Butter Chicken","Chicken Tikka Masala","Kadai Chicken","Punjabi Chicken","Chicken Ghee Roast","Nawabi Chicken","Peshawari Chicken","Chicken Mughlai","Chicken Curry","Chicken Biryani"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
-      "Non-Veg (Chicken)|Continental": { mains: ["Chicken Pepper Steak","BBQ Chicken","Chicken Cheese Lasagne","Chicken Shashlik with Rice","Chicken Stronganoff","Pasta- Spaghetti Arrabiata","Pasta- Spaghetti Aglio E Olio","Pasta- Penne Alfredo","Pasta- Penne Arrabbiata","Pasta- Penne Basil Pesto","Spicy Grilled Chicken Lasagne","Chicken Supreme Risotto","Fried Chicken & Chips"], sides: ["None / Included with dish","Rice","Chips"] },
-      "Non-Veg (Chicken)|Chinese": { mains: ["Thai Curry Green Chicken","Kung Pao Chicken","Chilli Chicken","Shanghai Chicken","Lemon Garlic Chicken","Pepper Sauce Chicken","Thai Curry Red Chicken","Stir Fried Chicken with Baby Corn & Mushroom","Roast Chicken in Red Chili Sauce","Shredded Chicken with Red Pepper","Schezwan Chicken","Chicken Triple Sichuan Rice"], sides: ["None / Included with dish","Chicken Garlic Rice","Chicken Garlic Noodles","Chicken Schezwan Rice","Chicken Schezwan Noodles","Chicken Mushroom Rice","Chicken Mushroom Noodles","Chicken Shanghai Rice","Chicken Shanghai Noodles","Chicken Crispy Chilli Coriander Rice","Chicken Crispy Chilli Coriander Noodles","Chicken Chilli Garlic Rice","Chicken Chilli Garlic Noodles","Chicken Hakka Noodles","Chicken Fried Rice"] },
-      "Non-Veg (Mutton)|Indian": { mains: ["Mutton Rogan Josh","Rarra Masala","Dum ka Mutton","Laal Maas","Keema Hari Mirch Do Pyaza","Mutton Biryani"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
-      "Non-Veg (Fish)|Continental": { mains: ["Lemon Grilled Fish with Butter Rice","Fried Fish & Chips","Grill Fish with Garlic Toast"], sides: ["None / Included with dish","Butter Rice","Chips","Garlic Toast"] },
-      "Non-Veg (Fish)|Chinese": { mains: ["Thai Curry Green Fish","Kung Pao Fish","Chilli Fish","Shanghai Fish","Lemon Garlic Fish","Pepper Sauce Fish","Thai Curry Red Fish"], sides: ["None / Included with dish","Garlic Rice","Garlic Noodles","Schezwan Rice","Schezwan Noodles","Hakka Noodles","Steamed Rice"] },
-      "Non-Veg (Prawn)|Indian": { mains: ["Malabar Prawns","Prawns Curry"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
-      "Non-Veg (Prawn)|Chinese": { mains: ["Thai Curry Green Prawns","Kung Pao Prawn","Chilli Prawn","Shanghai Prawn","Lemon Garlic Prawn","Pepper Sauce Prawns","Thai Curry Red Prawns"], sides: ["None / Included with dish","Garlic Rice","Garlic Noodles","Schezwan Rice","Schezwan Noodles","Hakka Noodles","Steamed Rice"] },
-      "Non-Veg (Lamb)|Continental": { mains: ["Pasta- Spaghetti Bolognese","Shepherd’s Pie","Lamb Steak","Roast Lamb","Lamb Bourguignon"], sides: ["None / Included with dish","Garlic Toast","Rice","Chips","Butter Rice"] },
-      "Non-Veg (Egg)|Chinese": { mains: ["","Egg Curry Chinese Style / Egg Gravy Platter"], sides: ["Egg Garlic Rice","Egg Garlic Noodles","Egg Schezwan Rice","Egg Schezwan Noodles","Egg Mushroom Rice","Egg Mushroom Noodles","Egg Shanghai Rice","Egg Shanghai Noodles","Egg Crispy Chilli Coriander Rice","Egg Crispy Chilli Coriander Noodles","Egg Chilli Garlic Rice","Egg Chilli Garlic Noodles","Egg Hakka Noodles"] }
-    };
+  const MENU = {
+    "Veg|Indian": { mains: ["Dal Fry","Dal Makhni","Dal Tadka","Aloo Jeera","Tawa Veg","Paneer Butter Masala","Paneer Tikka Masala","Palak Paneer","Kadai Paneer","Hing Aloo Dum","Khoya Matar Paneer","Veg Biryani"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
+    "Veg|Continental": { mains: ["Au Gratin with Garlic Toast","Cottage Cheese Steak","Corn and Mushroom Lasagne","Mushroom Corn Stroganoff","Pasta- Penne Alfredo","Pasta- Penne Arrabiata","Pasta- Penne Basil Pesto","Pasta- Spaghetti Arrabiata","Pasta- Spaghetti Aglio E Olio","Veg Shashlik with Rice","Spinach Corn Lasagne","Choice of Veg Risotto"], sides: ["None / Included with dish","Garlic Toast","Rice"] },
+    "Veg|Chinese": { mains: ["Chilly Paneer Gravy","Babycorn & Mushroom in Soya Garlic Sauce","Crispy Potato with Choice of Sauce","Crispy Vegetables with Kung Pao sauce","Crispy Vegetables with Schezwan sauce","Stir-Fried Vegetables","Thai Curry Green","Thai Curry Red","Veg Triple Schezwan Rice"], sides: ["None / Included with dish","Garlic Rice","Garlic Noodles","Schezwan Rice","Schezwan Noodles","Mushroom Rice","Mushroom Noodles","Shanghai Rice","Shanghai Noodles","Crispy Chilli Coriander Rice","Crispy Chilli Coriander Noodles","Chilli Garlic Rice","Chilli Garlic Noodles","Hakka Noodles","Veg Fried Rice","Steamed Rice"] },
+    "Non-Veg (Chicken)|Indian": { mains: ["Butter Chicken","Chicken Tikka Masala","Kadai Chicken","Punjabi Chicken","Chicken Ghee Roast","Nawabi Chicken","Peshawari Chicken","Chicken Mughlai","Chicken Curry","Chicken Biryani"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
+    "Non-Veg (Chicken)|Continental": { mains: ["Chicken Pepper Steak","BBQ Chicken","Chicken Cheese Lasagne","Chicken Shashlik with Rice","Chicken Stronganoff","Pasta- Spaghetti Arrabiata","Pasta- Spaghetti Aglio E Olio","Pasta- Penne Alfredo","Pasta- Penne Arrabbiata","Pasta- Penne Basil Pesto","Spicy Grilled Chicken Lasagne","Chicken Supreme Risotto","Fried Chicken & Chips"], sides: ["None / Included with dish","Rice","Chips"] },
+    "Non-Veg (Chicken)|Chinese": { mains: ["Thai Curry Green Chicken","Kung Pao Chicken","Chilli Chicken","Shanghai Chicken","Lemon Garlic Chicken","Pepper Sauce Chicken","Thai Curry Red Chicken","Stir Fried Chicken with Baby Corn & Mushroom","Roast Chicken in Red Chili Sauce","Shredded Chicken with Red Pepper","Schezwan Chicken","Chicken Triple Sichuan Rice"], sides: ["None / Included with dish","Chicken Garlic Rice","Chicken Garlic Noodles","Chicken Schezwan Rice","Chicken Schezwan Noodles","Chicken Mushroom Rice","Chicken Mushroom Noodles","Chicken Shanghai Rice","Chicken Shanghai Noodles","Chicken Crispy Chilli Coriander Rice","Chicken Crispy Chilli Coriander Noodles","Chicken Chilli Garlic Rice","Chicken Chilli Garlic Noodles","Chicken Hakka Noodles","Chicken Fried Rice"] },
+    "Non-Veg (Mutton)|Indian": { mains: ["Mutton Rogan Josh","Rarra Masala","Dum ka Mutton","Laal Maas","Keema Hari Mirch Do Pyaza","Mutton Biryani"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
+    "Non-Veg (Fish)|Continental": { mains: ["Lemon Grilled Fish with Butter Rice","Fried Fish & Chips","Grill Fish with Garlic Toast"], sides: ["None / Included with dish","Butter Rice","Chips","Garlic Toast"] },
+    "Non-Veg (Fish)|Chinese": { mains: ["Thai Curry Green Fish","Kung Pao Fish","Chilli Fish","Shanghai Fish","Lemon Garlic Fish","Pepper Sauce Fish","Thai Curry Red Fish"], sides: ["None / Included with dish","Garlic Rice","Garlic Noodles","Schezwan Rice","Schezwan Noodles","Hakka Noodles","Steamed Rice"] },
+    "Non-Veg (Prawn)|Indian": { mains: ["Malabar Prawns","Prawns Curry"], sides: ["None / Included with dish","Roti","Kulcha","Naan","Steamed Rice","Jeera Rice","Butter Roti","Cheese Garlic Naan"] },
+    "Non-Veg (Prawn)|Chinese": { mains: ["Thai Curry Green Prawns","Kung Pao Prawn","Chilli Prawn","Shanghai Prawn","Lemon Garlic Prawn","Pepper Sauce Prawns","Thai Curry Red Prawns"], sides: ["None / Included with dish","Garlic Rice","Garlic Noodles","Schezwan Rice","Schezwan Noodles","Hakka Noodles","Steamed Rice"] },
+    "Non-Veg (Lamb)|Continental": { mains: ["Pasta- Spaghetti Bolognese","Shepherd’s Pie","Lamb Steak","Roast Lamb","Lamb Bourguignon"], sides: ["None / Included with dish","Garlic Toast","Rice","Chips","Butter Rice"] },
+    "Non-Veg (Egg)|Chinese": { mains: ["Egg Curry Chinese Style / Egg Gravy Platter"], sides: ["Egg Garlic Rice","Egg Garlic Noodles","Egg Schezwan Rice","Egg Schezwan Noodles","Egg Mushroom Rice","Egg Mushroom Noodles","Egg Shanghai Rice","Egg Shanghai Noodles","Egg Crispy Chilli Coriander Rice","Egg Crispy Chilli Coriander Noodles","Egg Chilli Garlic Rice","Egg Chilli Garlic Noodles","Egg Hakka Noodles"] }
+  };
 
-    const DIETS = ["Veg","Non-Veg (Chicken)","Non-Veg (Mutton)","Non-Veg (Fish)","Non-Veg (Prawn)","Non-Veg (Lamb)","Non-Veg (Egg)"];
-    const CUISINES = {
-      "Veg": ["Indian","Continental","Chinese"],
-      "Non-Veg (Chicken)": ["Indian","Continental","Chinese"],
-      "Non-Veg (Mutton)": ["Indian"],
-      "Non-Veg (Fish)": ["Continental","Chinese"],
-      "Non-Veg (Prawn)": ["Indian","Chinese"],
-      "Non-Veg (Lamb)": ["Continental"],
-      "Non-Veg (Egg)": ["Chinese"]
-    };
+  const DIETS = ["Veg","Non-Veg (Chicken)","Non-Veg (Mutton)","Non-Veg (Fish)","Non-Veg (Prawn)","Non-Veg (Lamb)","Non-Veg (Egg)"];
+  const CUISINES = {
+    "Veg": ["Indian","Continental","Chinese"],
+    "Non-Veg (Chicken)": ["Indian","Continental","Chinese"],
+    "Non-Veg (Mutton)": ["Indian"],
+    "Non-Veg (Fish)": ["Continental","Chinese"],
+    "Non-Veg (Prawn)": ["Indian","Chinese"],
+    "Non-Veg (Lamb)": ["Continental"],
+    "Non-Veg (Egg)": ["Chinese"]
+  };
 
-    const DRINKS = [
-      "Beer",
-      "Blue Lagoon",
-      "Virgin Mojito",
-      "Fresh Lime Soda Sweet",
-      "Fresh Lime Soda Salty",
-      "Fresh Lime Soda Mix",
-      "Cold Drink"
-    ];
+  const DRINKS = ["Beer","Blue Lagoon","Virgin Mojito","Fresh Lime Soda Sweet","Fresh Lime Soda Salty","Fresh Lime Soda Mix","Cold Drink"];
+  const DESSERTS = ["Gulab jamun","Ice cream"];
 
-    const DESSERTS = [
-      "Gulab jamun",
-      "Ice cream"
-    ];
+  const blank = { name:"", diet:"", cuisine:"", main:"", side:"", drink:"", dessert:"" };
 
-    const blank = { name:"", diet:"", cuisine:"", main:"", side:"", drink:"", dessert:"" };
+  function App() {
+    const [step, setStep] = useState(1);
+    const [form, setForm] = useState(blank);
+    const [submitted, setSubmitted] = useState(false);
+    const [busy, setBusy] = useState(false);
+    const [error, setError] = useState("");
+    const sheetEndpoint = "https://script.google.com/macros/s/AKfycbwVGN_9lpYF1b6Y9gbGLiXKZOXoIChv6DI2II7g2b4XZ5ktzoed3qNIcrO9NGRlKAo/exec";
 
-    function App() {
-      const [step, setStep] = useState(1);
-      const [form, setForm] = useState(blank);
-      const [submitted, setSubmitted] = useState(false);
-      const [busy, setBusy] = useState(false);
-      const [error, setError] = useState("");
-      const sheetEndpoint = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+    const cuisines = CUISINES[form.diet] || [];
+    const isSingleCuisine = cuisines.length === 1;
+    const chosenMenu = useMemo(() => MENU[`${form.diet}|${form.cuisine}`], [form.diet, form.cuisine]);
+    const egg = form.diet === "Non-Veg (Egg)";
 
-      const cuisines = CUISINES[form.diet] || [];
-      const chosenMenu = useMemo(() => MENU[`${form.diet}|${form.cuisine}`], [form.diet, form.cuisine]);
-      const fixedCuisine = cuisines.length === 1;
-      const egg = form.diet === "Non-Veg (Egg)";
-
-      function chooseDiet(diet) {
-        const options = CUISINES[diet];
-        setForm({ ...form, diet, cuisine: options.length === 1 ? options[0] : "", main:"", side:"", drink:"", dessert:"" });
-      }
-
-      function next() {
-        setError("");
-        if (step === 1 && (!form.name.trim() || !form.diet)) return setError("Enter the attendee name and select a dietary preference.");
-        if (step === 2 && !form.cuisine) return setError("Select a cuisine.");
-        setStep(step + 1);
-      }
-
-      async function submit(e) {
-        e.preventDefault();
-        setError("");
-        if ((!egg && !form.main) || (egg && !form.side)) return setError(egg ? "Select a side dish." : "Select a main dish.");
-
-        const row = {
-          action: "upsert",
-          timestamp: new Date().toISOString(),
-          attendeeName: form.name.trim(),
-          attendeeKey: form.name.trim().replace(/\s+/g, " ").toLocaleLowerCase(),
-          dietaryPreference: form.diet,
-          cuisine: form.cuisine,
-          mainDish: form.main,
-          sideDish: form.side || "None / Included with dish",
-          drink: form.drink || "None",
-          dessert: form.dessert || "None"
-        };
-        const controller = new AbortController();
-        const timeoutId = window.setTimeout(() => controller.abort(), 12000);
-        setBusy(true);
-
-        try {
-          const response = await fetch(sheetEndpoint, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(row),
-            signal: controller.signal
-          });
-          if (!response.ok) throw new Error("The Google Sheet endpoint rejected the submission.");
-          const result = await response.json();
-          if (result?.success !== true || !["created", "updated"].includes(result?.operation)) {
-            throw new Error(result?.message || "The Google Sheet did not confirm that the response was saved.");
-          }
-          setSubmitted(true);
-        } catch (err) {
-          setError(err?.name === "AbortError" ? "Saving timed out. Please check your connection and try again." : (err?.message || "Submission failed."));
-        } finally {
-          window.clearTimeout(timeoutId);
-          setBusy(false);
-        }
-      }
-
-      function reset() { setForm(blank); setStep(1); setSubmitted(false); setError(""); }
-      function edit() { setSubmitted(false); setStep(3); }
-
-      const Choice = ({value, selected, onClick}) => (
-        <button type="button" onClick={onClick} className={`w-full text-left rounded-2xl border px-4 py-3 transition ${selected ? "border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-100" : "border-slate-200 bg-white hover:border-emerald-300"}`}>
-          {value}
-        </button>
-      );
-
-      return (
-        <main className="min-h-screen bg-[#f6f3eb] text-slate-900 px-4 py-8 sm:py-12">
-          <div className="mx-auto max-w-2xl">
-            <header className="mb-6">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-700">Lunch and dinner selection</p>
-              <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">10D Menu Tracker</h1>
-              <p className="mt-3 text-slate-600">Choose a preference, cuisine, dish, side, drink, and dessert.</p>
-            </header>
-
-            <div className="mb-4 grid grid-cols-3 gap-2">
-              {["Attendee","Cuisine","Menu"].map((label,i) => (
-                <div key={label}>
-                  <div className={`h-2 rounded-full ${step >= i+1 ? "bg-emerald-600" : "bg-slate-200"}`}/>
-                  <p className={`mt-2 text-xs font-semibold ${step === i+1 ? "text-emerald-700" : "text-slate-500"}`}>{i+1}. {label}</p>
-                </div>
-              ))}
-            </div>
-
-            <section className="rounded-[28px] border border-white bg-white/90 p-6 shadow-xl shadow-slate-200/60 sm:p-8">
-              {submitted ? (
-                <div className="py-8 text-center">
-                  <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full bg-emerald-100 text-3xl text-emerald-700">✓</div>
-                  <h2 className="text-2xl font-bold">Selection recorded</h2>
-                  <p className="mt-2 text-slate-600">{form.name}, your {form.cuisine} menu has been saved.</p>
-                  <div className="mt-6 rounded-2xl bg-slate-50 p-4 text-left text-sm space-y-1">
-                    <p><b>Main:</b> {form.main || "Not selected"}</p>
-                    <p><b>Side:</b> {form.side || "None / Included with dish"}</p>
-                    <p><b>Drink:</b> {form.drink || "None"}</p>
-                    <p><b>Dessert:</b> {form.dessert || "None"}</p>
-                  </div>
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <button onClick={edit} className="flex-1 rounded-xl border border-slate-300 px-4 py-3 font-bold">Edit response</button>
-                    <button onClick={reset} className="flex-1 rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white">Submit another</button>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={submit}>
-                  {step === 1 && (
-                    <div>
-                      <h2 className="text-2xl font-bold">Who is ordering?</h2>
-                      <label className="mt-6 block text-sm font-bold">Attendee Name <span className="text-red-600">*</span></label>
-                      <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Enter full name" className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100" />
-                      <p className="mt-6 text-sm font-bold">Dietary Preference <span className="text-red-600">*</span></p>
-                      <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                        {DIETS.map(d=><Choice key={d} value={d} selected={form.diet===d} onClick={()=>chooseDiet(d)}/>)}
-                      </div>
-                    </div>
-                  )}
-
-                  {step === 2 && (
-                    <div>
-                      <p className="text-sm font-bold text-emerald-700">{form.diet}</p>
-                      <h2 className="mt-1 text-2xl font-bold">Select cuisine</h2>
-                      {fixedCuisine && <p className="mt-2 text-sm text-slate-600">Only {cuisines[0]} cuisine is available for this preference.</p>}
-                      <div className="mt-6 grid gap-3">
-                        {cuisines.map(c=><Choice key={c} value={c} selected={form.cuisine===c} onClick={()=>setForm({...form,cuisine:c,main:"",side:"",drink:"",dessert:""})}/>)}
-                      </div>
-                    </div>
-                  )}
-
-                  {step === 3 && chosenMenu && (
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-sm font-bold text-emerald-700">{form.diet} · {form.cuisine}</p>
-                        <h2 className="mt-1 text-2xl font-bold">Build your menu</h2>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-bold">Main Dish {!egg && <span className="text-red-600">*</span>} {egg && <span className="font-normal text-slate-500">(optional)</span>}</label>
-                        <select value={form.main} onChange={e=>setForm({...form,main:e.target.value})} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                          <option value="">{egg ? "No main dish" : "Select a main dish"}</option>
-                          {chosenMenu.mains.filter(Boolean).map(x=><option key={x}>{x}</option>)}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-bold">Side Dish {egg ? <span className="text-red-600">*</span> : <span className="font-normal text-slate-500">(optional)</span>}</label>
-                        <select value={form.side} onChange={e=>setForm({...form,side:e.target.value})} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                          <option value="">{egg ? "Select a side dish" : "None / Included with dish"}</option>
-                          {chosenMenu.sides.map(x=><option key={x}>{x}</option>)}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-bold">Drinks <span className="font-normal text-slate-500">(optional)</span></label>
-                        <select value={form.drink} onChange={e=>setForm({...form,drink:e.target.value})} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                          <option value="">Select a drink</option>
-                          {DRINKS.map(x=><option key={x}>{x}</option>)}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-bold">Dessert <span className="font-normal text-slate-500">(optional)</span></label>
-                        <select value={form.dessert} onChange={e=>setForm({...form,dessert:e.target.value})} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                          <option value="">Select a dessert</option>
-                          {DESSERTS.map(x=><option key={x}>{x}</option>)}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                  {error && <p className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
-                  <div className="mt-7 flex gap-3">
-                    {step > 1 && <button type="button" onClick={()=>setStep(step-1)} className="rounded-xl border border-slate-300 px-5 py-3 font-bold">Back</button>}
-                    {step < 3 ? (
-                      <button type="button" onClick={next} className="ml-auto rounded-xl bg-emerald-700 px-6 py-3 font-bold text-white hover:bg-emerald-800">Continue</button>
-                    ) : (
-                      <button disabled={busy} className="ml-auto rounded-xl bg-emerald-700 px-6 py-3 font-bold text-white disabled:opacity-60">{busy?"Saving...":"Submit selection"}</button>
-                    )}
-                  </div>
-                </form>
-              )}
-            </section>
-            <p className="mt-4 text-center text-xs text-slate-500">No account or app download required.</p>
-          </div>
-        </main>
-      );
+    function chooseDiet(diet) {
+      const available = CUISINES[diet] || [];
+      setForm({
+        ...form,
+        diet,
+        cuisine: available.length === 1 ? available[0] : "",
+        main: "",
+        side: "",
+        drink: "",
+        dessert: ""
+      });
     }
 
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<App />);
-  </script>
+    function next() {
+      setError("");
+      if (step === 1) {
+        if (!form.name.trim() || !form.diet) return setError("Enter attendee name and select a dietary preference.");
+        setStep(isSingleCuisine ? 3 : 2);
+        return;
+      }
+      if (step === 2) {
+        if (!form.cuisine) return setError("Select a cuisine.");
+        setStep(3);
+      }
+    }
+
+    function back() {
+      setError("");
+      if (step === 3 && isSingleCuisine) {
+        setStep(1);
+      } else {
+        setStep(step - 1);
+      }
+    }
+
+    async function submit(e) {
+      e.preventDefault();
+      setError("");
+
+      if (egg && !form.main && !form.side) {
+        return setError("Please select at least a main dish or a side dish.");
+      }
+      if (!egg && !form.main) {
+        return setError("Select a main dish.");
+      }
+
+      const row = {
+        action: "upsert",
+        timestamp: new Date().toISOString(),
+        attendeeName: form.name.trim(),
+        attendeeKey: form.name.trim().replace(/\s+/g, " ").toLowerCase(),
+        dietaryPreference: form.diet,
+        cuisine: form.cuisine,
+        mainDish: form.main || "None",
+        sideDish: form.side || "None / Included with dish",
+        drink: form.drink || "None",
+        dessert: form.dessert || "None"
+      };
+
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 12000);
+      setBusy(true);
+
+      try {
+        const response = await fetch(sheetEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(row),
+          signal: controller.signal,
+          redirect: "follow"
+        });
+
+        if (!response.ok) throw new Error("Google Sheet rejected the submission.");
+        const result = await response.json();
+        
+        if (result?.success !== true) {
+          throw new Error(result?.message || "Google Sheet did not confirm entry creation.");
+        }
+        setSubmitted(true);
+      } catch (err) {
+        setError(err.name === "AbortError" ? "Request timed out. Please check your connection." : (err.message || "Submission failed."));
+      } finally {
+        window.clearTimeout(timeoutId);
+        setBusy(false);
+      }
+    }
+
+    const Choice = ({ value, selected, onClick }) => (
+      <button 
+        type="button" 
+        onClick={onClick} 
+        className={`w-full text-left rounded-2xl border px-4 py-3 transition ${
+          selected ? "border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-100" : "border-slate-200 bg-white hover:border-emerald-300"
+        }`}
+      >
+        {value}
+      </button>
+    );
+
+    return (
+      <main className="min-h-screen bg-[#f6f3eb] text-slate-900 px-4 py-8 sm:py-12">
+        <div className="mx-auto max-w-2xl">
+          <header className="mb-6">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-700">Lunch and dinner selection</p>
+            <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">10D Menu Tracker</h1>
+            <p className="mt-3 text-slate-600">Choose a preference, cuisine, dish, side, drink, and dessert.</p>
+          </header>
+
+          <div className="mb-4 grid grid-cols-3 gap-2">
+            {["Attendee", "Cuisine", "Menu"].map((label, i) => (
+              <div key={label}>
+                <div className={`h-2 rounded-full ${step >= i + 1 ? "bg-emerald-600" : "bg-slate-200"}`} />
+                <p className={`mt-2 text-xs font-semibold ${step === i + 1 ? "text-emerald-700" : "text-slate-500"}`}>{i + 1}. {label}</p>
+              </div>
+            ))}
+          </div>
+
+          <section className="rounded-[28px] border border-white bg-white/90 p-6 shadow-xl shadow-slate-200/60 sm:p-8">
+            {submitted ? (
+              <div className="py-8 text-center">
+                <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full bg-emerald-100 text-3xl text-emerald-700">✓</div>
+                <h2 className="text-2xl font-bold">Selection recorded</h2>
+                <p className="mt-2 text-slate-600">{form.name}, your {form.cuisine} menu has been saved.</p>
+                <div className="mt-6 rounded-2xl bg-slate-50 p-4 text-left text-sm space-y-1">
+                  <p><b>Main:</b> {form.main || "None"}</p>
+                  <p><b>Side:</b> {form.side || "None / Included with dish"}</p>
+                  <p><b>Drink:</b> {form.drink || "None"}</p>
+                  <p><b>Dessert:</b> {form.dessert || "None"}</p>
+                </div>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <button onClick={() => { setSubmitted(false); setStep(3); }} className="flex-1 rounded-xl border border-slate-300 px-4 py-3 font-bold">Edit response</button>
+                  <button onClick={() => { setForm(blank); setStep(1); setSubmitted(false); setError(""); }} className="flex-1 rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white">Submit another</button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={submit}>
+                {step === 1 && (
+                  <div>
+                    <h2 className="text-2xl font-bold">Who is ordering?</h2>
+                    <label className="mt-6 block text-sm font-bold">Attendee Name <span className="text-red-600">*</span></label>
+                    <input 
+                      value={form.name} 
+                      onChange={e => setForm({ ...form, name: e.target.value })} 
+                      placeholder="Enter full name" 
+                      className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100" 
+                    />
+                    <p className="mt-6 text-sm font-bold">Dietary Preference <span className="text-red-600">*</span></p>
+                    <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                      {DIETS.map(d => <Choice key={d} value={d} selected={form.diet === d} onClick={() => chooseDiet(d)} />)}
+                    </div>
+                  </div>
+                )}
+
+                {step === 2 && (
+                  <div>
+                    <p className="text-sm font-bold text-emerald-700">{form.diet}</p>
+                    <h2 className="mt-1 text-2xl font-bold">Select cuisine</h2>
+                    <div className="mt-6 grid gap-3">
+                      {cuisines.map(c => (
+                        <Choice 
+                          key={c} 
+                          value={c} 
+                          selected={form.cuisine === c} 
+                          onClick={() => setForm({ ...form, cuisine: c, main: "", side: "", drink: "", dessert: "" })} 
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {step === 3 && chosenMenu && (
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm font-bold text-emerald-700">{form.diet} · {form.cuisine}</p>
+                      <h2 className="mt-1 text-2xl font-bold">Build your menu</h2>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold">Main Dish {!egg && <span className="text-red-600">*</span>} {egg && <span className="font-normal text-slate-500">(optional)</span>}</label>
+                      <select value={form.main} onChange={e => setForm({ ...form, main: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
+                        <option value="">{egg ? "No main dish" : "Select a main dish"}</option>
+                        {chosenMenu.mains.filter(Boolean).map(x => <option key={x} value={x}>{x}</option>)}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold">Side Dish {egg ? <span className="text-emerald-700 font-medium">(Choose rice/noodles if having no curry)</span> : <span className="font-normal text-slate-500">(optional)</span>}</label>
+                      <select value={form.side} onChange={e => setForm({ ...form, side: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
+                        <option value="">{egg ? "Select a side dish" : "None / Included with dish"}</option>
+                        {chosenMenu.sides.map(x => <option key={x} value={x}>{x}</option>)}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold">Drinks <span className="font-normal text-slate-500">(optional)</span></label>
+                      <select value={form.drink} onChange={e => setForm({ ...form, drink: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
+                        <option value="">Select a drink</option>
+                        {DRINKS.map(x => <option key={x} value={x}>{x}</option>)}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-bold">Dessert <span className="font-normal text-slate-500">(optional)</span></label>
+                      <select value={form.dessert} onChange={e => setForm({ ...form, dessert: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
+                        <option value="">Select a dessert</option>
+                        {DESSERTS.map(x => <option key={x} value={x}>{x}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {error && <p className="mt-5 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
+                
+                <div className="mt-7 flex gap-3">
+                  {step > 1 && <button type="button" onClick={back} className="rounded-xl border border-slate-300 px-5 py-3 font-bold">Back</button>}
+                  {step < 3 ? (
+                    <button type="button" onClick={next} className="ml-auto rounded-xl bg-emerald-700 px-6 py-3 font-bold text-white hover:bg-emerald-800">Continue</button>
+                  ) : (
+                    <button disabled={busy} className="ml-auto rounded-xl bg-emerald-700 px-6 py-3 font-bold text-white disabled:opacity-60">{busy ? "Saving..." : "Submit selection"}</button>
+                  )}
+                </div>
+              </form>
+            )}
+          </section>
+          <p className="mt-4 text-center text-xs text-slate-500">No account or app download required.</p>
+        </div>
+      </main>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
 </body>
 </html>
