@@ -55,14 +55,21 @@
     const [submitted, setSubmitted] = useState(false);
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
-    const sheetEndpoint = "https://script.google.com/macros/s/AKfycbwVGN_9lpYF1b6Y9gbGLiXKZOXoIChv6DI2II7g2b4XZ5ktzoed3qNIcrO9NGRlKAo/exec";
+    const sheetEndpoint = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
 
     const cuisines = CUISINES[form.diet] || [];
     const isSingleCuisine = cuisines.length === 1;
     const chosenMenu = useMemo(() => MENU[`${form.diet}|${form.cuisine}`], [form.diet, form.cuisine]);
     const egg = form.diet === "Non-Veg (Egg)";
 
+    // Update field and clear error immediately
+    function updateField(field, value) {
+      if (error) setError("");
+      setForm(prev => ({ ...prev, [field]: value }));
+    }
+
     function chooseDiet(diet) {
+      if (error) setError("");
       const available = CUISINES[diet] || [];
       setForm({
         ...form,
@@ -204,7 +211,7 @@
                     <label className="mt-6 block text-sm font-bold">Attendee Name <span className="text-red-600">*</span></label>
                     <input 
                       value={form.name} 
-                      onChange={e => setForm({ ...form, name: e.target.value })} 
+                      onChange={e => updateField("name", e.target.value)} 
                       placeholder="Enter full name" 
                       className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100" 
                     />
@@ -225,7 +232,10 @@
                           key={c} 
                           value={c} 
                           selected={form.cuisine === c} 
-                          onClick={() => setForm({ ...form, cuisine: c, main: "", side: "", drink: "", dessert: "" })} 
+                          onClick={() => {
+                            if (error) setError("");
+                            setForm({ ...form, cuisine: c, main: "", side: "", drink: "", dessert: "" });
+                          }} 
                         />
                       ))}
                     </div>
@@ -241,32 +251,48 @@
 
                     <div>
                       <label className="block text-sm font-bold">Main Dish {!egg && <span className="text-red-600">*</span>} {egg && <span className="font-normal text-slate-500">(optional)</span>}</label>
-                      <select value={form.main} onChange={e => setForm({ ...form, main: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                        <option value="">{egg ? "No main dish" : "Select a main dish"}</option>
+                      <select 
+                        value={form.main} 
+                        onChange={e => updateField("main", e.target.value)} 
+                        className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3"
+                      >
+                        <option value="" disabled>{egg ? "No main dish" : "-- Select a main dish --"}</option>
                         {chosenMenu.mains.filter(Boolean).map(x => <option key={x} value={x}>{x}</option>)}
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-bold">Side Dish {egg ? <span className="text-emerald-700 font-medium">(Choose rice/noodles if having no curry)</span> : <span className="font-normal text-slate-500">(optional)</span>}</label>
-                      <select value={form.side} onChange={e => setForm({ ...form, side: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                        <option value="">{egg ? "Select a side dish" : "None / Included with dish"}</option>
+                      <select 
+                        value={form.side} 
+                        onChange={e => updateField("side", e.target.value)} 
+                        className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3"
+                      >
+                        <option value="">{egg ? "-- Select a side dish --" : "None / Included with dish"}</option>
                         {chosenMenu.sides.map(x => <option key={x} value={x}>{x}</option>)}
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-bold">Drinks <span className="font-normal text-slate-500">(optional)</span></label>
-                      <select value={form.drink} onChange={e => setForm({ ...form, drink: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                        <option value="">Select a drink</option>
+                      <select 
+                        value={form.drink} 
+                        onChange={e => updateField("drink", e.target.value)} 
+                        className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3"
+                      >
+                        <option value="">None</option>
                         {DRINKS.map(x => <option key={x} value={x}>{x}</option>)}
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-bold">Dessert <span className="font-normal text-slate-500">(optional)</span></label>
-                      <select value={form.dessert} onChange={e => setForm({ ...form, dessert: e.target.value })} className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3">
-                        <option value="">Select a dessert</option>
+                      <select 
+                        value={form.dessert} 
+                        onChange={e => updateField("dessert", e.target.value)} 
+                        className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3"
+                      >
+                        <option value="">None</option>
                         {DESSERTS.map(x => <option key={x} value={x}>{x}</option>)}
                       </select>
                     </div>
